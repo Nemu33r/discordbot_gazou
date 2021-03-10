@@ -1,8 +1,8 @@
 # インストールした discord.py を読み込む
 import discord
+# 自分のBotのアクセストークンをenv.pyにTOKEN = 'hoge'の形でかく
+import env
 
-# 自分のBotのアクセストークンに置き換えてください
-TOKEN = 'ODE4ODM1Mzg4MjIyNzk5OTE0.YEd14Q.OfrOpMzOA77-XYwjwm1CgWInn3A'
 
 # 接続に必要なオブジェクトを生成
 client = discord.Client()
@@ -34,14 +34,14 @@ async def on_message(message):
 
     # 「/hoge」と発言したら「なんか」が返る処理
     if message.content == '/abiko':
-        await message.channel.send('自サーバのそと https://cdn.discordapp.com/attachments/726092371799965789/818824755704102982/image0.gif')
+        await message.channel.send('https://cdn.discordapp.com/attachments/726092371799965789/818824755704102982/image0.gif')
 
     # 「/hoge」と発言したら「なんか」が返る処理
     if message.content == '/lonkis':
-        await message.channel.send('DriveのGifはさんしょうできないです https://cdn.discordapp.com/attachments/726092371799965789/818824755704102982/image0.gif')
+        await message.channel.send('https://cdn.discordapp.com/attachments/726092371799965789/818824755704102982/image0.gif')
 
     if client.user in message.mentions: # 話しかけられたかの判定
         await reply(message) # 返信する非同期関数を実行
 
 # Botの起動とDiscordサーバーへの接続
-client.run(TOKEN)
+client.run(env.TOKEN)
