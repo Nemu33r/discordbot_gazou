@@ -23,5 +23,9 @@ async def on_message(message):
     if message.content == '/neko':
         await message.channel.send('にゃーん')
 
+    # 「/hoge」と発言したら「なんか」が返る処理
+    if message.content == '/gaming_shoe':
+        await message.channel.send('https://cdn.discordapp.com/attachments/819156022287532053/819156068046340136/image0.gif')
+
 # Botの起動とDiscordサーバーへの接続
 client.run(TOKEN)
