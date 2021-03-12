@@ -76,7 +76,7 @@ async def add(ctx, key, val):
         await ctx.send(key + 'に' + val + ' を登録するよ')
         conn.set(key, val)
     else:
-        ctx.send('既に値が入ってるよ！')
+        await ctx.send('既に値が入ってるよ！')
 
 @bot.command()
 #Redisに登録されているKeyの一覧を取得するコマンド
