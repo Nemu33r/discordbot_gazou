@@ -32,11 +32,7 @@ async def on_ready():
     print(bot.user.name)
     print(bot.user.id)
     print('------------------------')
-
-@bot.command()
-#テストコード
-async def foo(ctx, arg):
-    await ctx.send(arg)
+    await bot.change_presence(activity=discord.Game(f"ねこはねこーとなくよ"))
 
 @bot.command()
 #/nekoで呼ばれた時の処理
@@ -48,22 +44,39 @@ async def neko(ctx):
 #ダイスロール！
 async def roll(ctx, dice : str):
     """ダイスを振るよ。XdYの形式で渡してね"""
+#サンプルコードコピペ。str型で持ってるから配列にしたいなあ
     try:
         rolls, limit = map(int, dice.split('d'))
     except Exception:
         await ctx.send('ふぉーまっとがちがうよ!')
         return
-
-    result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
     await ctx.send(dice + 'を振るよ！')
+#ここまではコピペでいいはず
+    result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
+#    def diceroll(dice_size):
+#        print(dice_size + '個のダイスを振るよ！')
+#        num = np.random.randinit(1, int(dice_size))
+#        return num
+#    def simple_dice(dice_size, dice_num):
+#        dice_val = np.array([], dtype=np.int64)
+#        print(dice_val)
+#        for i in range(dice_num):
+#            dice_val = np.append(dice_val, dice(dice_size))
+#            print('for文のなか！'+ dice_val)
+#        msg = str(np.sum(dice_val)) + '=' + srt(dice_val)
+#        return msg
+#    await ctx.send(simple_dice(limit, rolls))
     await ctx.send(result)
-
 @bot.command()
 #Redisにデータを登録するコマンド
 async def add(ctx, key, val):
     """/add key url : DBに値を登録するよ"""
-    await ctx.send(key + 'に' + val + ' を登録するよ')
-    conn.set(key, val)
+    result = conn.get(key)
+    if result is None:
+        await ctx.send(key + 'に' + val + ' を登録するよ')
+        conn.set(key, val)
+    else:
+        ctx.send('既に値が入ってるよ！')
 
 @bot.command()
 #Redisに登録されているKeyの一覧を取得するコマンド
