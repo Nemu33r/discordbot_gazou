@@ -14,10 +14,14 @@ import os
 import sys
 import random
 import datetime
-#ローカル環境なら
-import env
 #Redis接続用モジュール
 import r
+
+#環境変数取得
+environment = os.environ.get("TOKEN")
+#環境変数がない(=ローカル環境)なら
+if environment is None:
+    import env
 
 #botコマンド構造体の定義
 description = '''Discord.pyをつかったBotだよ
