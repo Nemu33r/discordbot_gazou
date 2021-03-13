@@ -82,12 +82,16 @@ async def roll(ctx, dice : str):
 #Redisにデータを登録するコマンド
 async def add(ctx, key, val):
     """/add key url : DBに値を登録するよ"""
-    result = conn.get(key)
-    if result is None:
-        await ctx.send(key + 'に' + val + ' を登録するよ')
-        conn.set(key, val)
+    ref = conn.get(key)
+    await ctx.send(key + 'に' + val + ' を登録するよ')
+    if ref is None:
+        result = conn.set(key, val)
+        if result is True:
+            await ctx.send('登録したよ！')
+        else:
+            await ctx.send('しすてむえらーだよ！')
     else:
-        await ctx.send('既に値が入ってるよ！')
+        await ctx.send('既に登録済みだよ！')
 
 @bot.command()
 #Redisに登録されているKeyの一覧を取得するコマンド
@@ -105,7 +109,9 @@ async def delete(ctx, key):
     result = conn.get(key)
     if result is None:
         await ctx.send('存在しないよ！')
-    await conn.delete(key)
+    else:
+        conn.delete(key)
+        await ctx.send(key + 'を削除したよ！')
 
 @bot.command()
 #Redisからデータを削除するコマンド
@@ -117,6 +123,7 @@ async def ref(ctx, key):
         await ctx.send('存在しないよ！')
     await ctx.send(result)
 
+#エラーハンドリングだが機能してない
 @bot.event
 async def on_command_error(exception: Exception, ctx: commands.Context):
     if isinstance(exception, commands.BadArgument):
@@ -126,7 +133,7 @@ async def on_command_error(exception: Exception, ctx: commands.Context):
 environment = os.environ.get("TOKEN")
 if environment is None:
     print('環境変数TOKENがないのでenv.pyのTOKENを見て実行します')
-    #テスト用につなぐ時はTOKEN_TEST
+    #テスト用につなぐ時はTOKEN_TEST、本番環境にPUSHする前に変えておくこと
     bot.run(env.TOKEN)
 else:
     print('環境変数TOKENに値があるのでそのTOKENを見て実行します')
