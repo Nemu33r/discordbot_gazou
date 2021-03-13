@@ -1,4 +1,11 @@
+#############################################
 #discord.pyのフレームワークを使うばーじょん
+#こっちをメインで開発中
+#
+#残課題：ダイス機能の拡充、ちゃんと配列で扱って合算値とか出せるようにしたい
+#        エラーハンドリングちゃんとできるようにしたい
+#
+#############################################
 import discord
 from discord.ext import commands
 
@@ -7,8 +14,7 @@ import os
 import sys
 import random
 import datetime
-
-# 自分のBotのアクセストークンをenv.pyにTOKEN = 'hoge'の形でかく
+#ローカル環境なら
 import env
 #Redis接続用モジュール
 import r
@@ -53,6 +59,7 @@ async def roll(ctx, dice : str):
     await ctx.send(dice + 'を振るよ！')
 #ここまではコピペでいいはず
     result = ', '.join(str(random.randint(1, limit)) for r in range(rolls))
+#うごかない
 #    def diceroll(dice_size):
 #        print(dice_size + '個のダイスを振るよ！')
 #        num = np.random.randinit(1, int(dice_size))
@@ -112,4 +119,11 @@ async def on_command_error(exception: Exception, ctx: commands.Context):
         await cnt.send('たぶんふぉーまっとがちがうよ！つかいかたは/help を見てね！')
 
 #ログインする
-bot.run(env.TOKEN)
+environment = os.environ.get("TOKEN")
+if environment is None:
+    print('環境変数TOKENがないのでenv.pyのTOKENを見て実行します')
+    #テスト用につなぐ時はTOKEN_TEST
+    bot.run(env.TOKEN)
+else:
+    print('環境変数TOKENに値があるのでそのTOKENを見て実行します')
+    bot.run(environment)

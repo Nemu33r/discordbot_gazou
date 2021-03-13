@@ -18,16 +18,8 @@ def connect():
 
             )
     else:
-        print(os.environ.get('環境変数REDIS_URLが存在するためそちらを使用してRedisに接続します'))
+        print('環境変数REDIS_URLが存在するためそちらを使用してRedisに接続します')
         return redis.from_url(
             url=environment, # 環境変数にあるURLを渡す
             decode_responses=True, # 日本語の文字化け対策のため必須
         )
-
-    #ローカル環境等で環境変数にREDIS_URLがないなら
-    #print('Redisに接続します')
-    #return redis.from_url(
-    #    url=env.REDIS_URL,
-    #    decode_responses=True,
-    #
-    #)

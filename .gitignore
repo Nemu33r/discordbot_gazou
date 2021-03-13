@@ -129,5 +129,4 @@ dmypy.json
 .pyre/
 
 #ローカル環境用
-
-#env.py
+env.py
